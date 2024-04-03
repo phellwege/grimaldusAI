@@ -2,12 +2,14 @@ import react, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Button, Card, Form } from 'react-bootstrap';
+import LoadingPage from './loading/LoadingPage'
 import React from 'react';
 
 function App() {
   const [textInput, setTextInput] = useState(null)
   return (
     <>
+    <LoadingPage />
     <div className='pageWrapper'>
       <h1>Grimaldus AI</h1>
       <Card className='inputAndOutputCard'>
