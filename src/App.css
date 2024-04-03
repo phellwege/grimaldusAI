@@ -1,3 +1,37 @@
+* {
+  background-color:#282c34;
+  color: whitesmoke;
+}
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  min-height: 70vh;
+}
+.inputAndOutputCard {
+  width: 60%;
+}
+.cardInnerDiv {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.cardLeftDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 40%;
+  align-items: center;
+  border-right: 2px solid darkgray;
+}
+.cardRightDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 40%;
+  align-items: center;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
