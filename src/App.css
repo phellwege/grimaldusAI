@@ -20,6 +20,7 @@
   flex-direction: column;
   justify-content: space-around;
   width: 40%;
+  min-height: 25vh;
   align-items: center;
   border-right: 2px solid darkgray;
 }
