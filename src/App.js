@@ -6,10 +6,13 @@ import LoadingPage from './loading/LoadingPage'
 import React from 'react';
 
 function App() {
-  const [textInput, setTextInput] = useState(null)
+  const [loading, setLoading] = useState(false);
+  const [textInput, setTextInput] = useState(null);
   return (
     <>
-    <LoadingPage />
+    {loading && (
+      <LoadingPage />
+    )}
     <div className='pageWrapper'>
       <h1>Grimaldus AI</h1>
       <Card className='inputAndOutputCard'>
@@ -33,7 +36,10 @@ function App() {
               <Form>
                 <Form.Group controlId="formFile" className="mb-3">
                   <Form.Label>Audio Input</Form.Label>
-                  <Form.Control type="file" />
+                  <Form.Control 
+                  type="file"
+                  accept='audio/*'
+                  />
                 </Form.Group>
               </Form>
               <Button>Submit</Button>
