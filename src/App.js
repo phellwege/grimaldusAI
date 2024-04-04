@@ -13,13 +13,35 @@ function App() {
   const tts_url = `https://api.elevenlabs.io/v1/text-to-speech/${process.env.REACT_APP_VOICE_ID}/stream`;
   const [loading, setLoading] = useState(false);
   const [textInput, setTextInput] = useState('');
-  const [audioFile, setAudioFile] = useState(null);
-  const [audioUrl, setAudioUrl] = useState('');
-  const [whisperTranscription, setWhisperTranscription] = useState(null)
   const [gptGeneratedResponse, setGptGeneratedResponse] = useState(null);
 
-
-  const [recording, setRecording] = useState(false)
+  const [recording, setRecording] = useState(false);
+  let recognition = null;
+  const handleListening = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition ||
+      window.mozSpeechRecognition ||
+      window.msSpeechRecognition;
+  
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+  
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setTextInput(transcript);
+      };
+  
+      if (!recording) {
+        recognition.start();
+        setRecording(true);
+      } else {
+        recognition.stop();
+        setRecording(false);
+      }
+    }
+  };
 
   const handleSubmitText = async (e) => {
     e.preventDefault();
@@ -33,7 +55,7 @@ function App() {
       console.error(error)
     }
   };
-  // this is the brain of grimaldus
+  // this is the brain of Grimaldus
   const generateGPTResponse = async (textInput) => {
     try {
       const gptResponse = await openai.chat.completions.create({
@@ -158,41 +180,6 @@ function App() {
       });
   };
   
-  
-  // audio ingestion file blocked by cors
-  // const handleFileChange = (event) => {
-  //   setAudioFile(event.target.files[0]);
-  // };
-  // const handleTranscription = async () => {
-  //   if (!audioFile) return;
-
-  //   setLoading(true);
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append('audio', audioFile);
-
-  //     const response = await fetch('https://api.openai.com/v1/speech/transcribe', {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
-  //       },
-  //       body: formData,
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to transcribe audio');
-  //     }
-
-  //     const data = await response.json();
-  //     setTextInput(data.transcription);
-  //     generateGPTResponse()
-  //     // setTranscription('');
-  //   } catch (error) {
-  //     console.error('Error transcribing audio:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   return (
     <>
@@ -227,35 +214,28 @@ function App() {
                 Submit
               </Button>
             </div>
-            
-            {/* <div className='cardRightDiv'> */}
-              {/* <Form>
-                <Form.Group controlId="formFile" className="mb-3">
-                  <Form.Label>Audio Input</Form.Label>
-                  <Form.Control 
-                  type="file"
-                  accept='audio/*'
-                  onChange={handleFileChange}
-                  />
-                  <Form.Text>File uploads are currently limited to 25 MB and the following input file types are supported: mp3, mp4, mpeg, mpga, m4a, wav, and webm.</Form.Text>
-                </Form.Group>
-              </Form> */}
-
-              {/* <div>
-                <h5>Or Try</h5>
+            {/* user audio input */}
+            <div className='cardRightDiv'>
+              <div>
                 <div 
                 className='micDiv'
-                onClick={() => setRecording(true)}
                 >
                   {!recording ? (
-                    <FaMicrophone size={50} className='micIcon'/>
+                    <FaMicrophone 
+                    size={50} 
+                    className='micIcon'
+                    onClick={() => {handleListening()}}
+                    />
                   ) : (
-                    <ImCancelCircle size={50} className='cancelIcon'/>
+                    <ImCancelCircle 
+                    size={50} 
+                    className='cancelIcon'
+                    onClick={() => {handleListening()}}
+                    />
                   )}
                 </div>
-              </div> */}
-              {/* <Button onClick={handleTranscription}>Submit</Button>
-            </div> */}
+              </div>
+            </div>
           </div>
         </Card.Body>
       </Card>
