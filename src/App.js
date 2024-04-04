@@ -72,7 +72,7 @@ function App() {
       console.error('No generated response to convert to speech');
       return;
     }
-  
+    setLoading(true)
     const options = {
       method: 'POST',
       headers: {
@@ -105,6 +105,7 @@ function App() {
       link.setAttribute('download', 'output.mp3');
       document.body.appendChild(link);
       link.click();
+      setLoading(false)
     })
     .catch(error => {
       console.error('Error:', error);
