@@ -156,7 +156,7 @@ function App() {
           "style": 0.0,
           "use_speaker_boost": true
         },
-        "output_format": "mp3_44100_64" 
+        "output_format": "mp3_44100_192" 
       })
     };
   
